@@ -10,12 +10,12 @@ import CoreData
 
 @main
 struct AllowanceIQApp: App {
-    let persistenceController = PersistenceController.shared
+    @StateObject private var dataManager = DataManager()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(dataManager)
         }
     }
 }

@@ -6,7 +6,32 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B47608E12EE4E29700015966 /* AllownaceIQ Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B47608C12EE4E29600015966 /* AllownaceIQ Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		B47608CE2EE4E29700015966 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4B0C4E22ED51CCD003221FD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B47608C02EE4E29600015966;
+			remoteInfo = "AllownaceIQ Watch App";
+		};
+		B47608D82EE4E29700015966 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4B0C4E22ED51CCD003221FD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B47608C02EE4E29600015966;
+			remoteInfo = "AllownaceIQ Watch App";
+		};
+		B47608DF2EE4E29700015966 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4B0C4E22ED51CCD003221FD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B47608C02EE4E29600015966;
+			remoteInfo = "AllownaceIQ Watch App";
+		};
 		B4B0C4FD2ED51CCE003221FD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B4B0C4E22ED51CCD003221FD /* Project object */;
@@ -23,31 +48,125 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		B47608E52EE4E29700015966 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				B47608E12EE4E29700015966 /* AllownaceIQ Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		B47608C12EE4E29600015966 /* AllownaceIQ Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AllownaceIQ Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B47608CD2EE4E29700015966 /* AllownaceIQ Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AllownaceIQ Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B47608D72EE4E29700015966 /* AllownaceIQ Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AllownaceIQ Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4B0C4EA2ED51CCD003221FD /* AllowanceIQ.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AllowanceIQ.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4B0C4FC2ED51CCE003221FD /* AllowanceIQTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AllowanceIQTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4B0C5062ED51CCE003221FD /* AllowanceIQUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AllowanceIQUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B47608B72EE4E14800015966 /* Exceptions for "AllowanceIQUITests" folder in "AllowanceIQ" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AllowanceIQUITests.swift,
+				AllowanceIQUITestsLaunchTests.swift,
+			);
+			target = B4B0C4E92ED51CCD003221FD /* AllowanceIQ */;
+		};
+		B47608B82EE4E14800015966 /* Exceptions for "AllowanceIQUITests" folder in "AllowanceIQUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AllowanceIQUITests.swift,
+				AllowanceIQUITestsLaunchTests.swift,
+			);
+			target = B4B0C5052ED51CCE003221FD /* AllowanceIQUITests */;
+		};
+		B47608BB2EE4E19500015966 /* Exceptions for "AllowanceIQTests" folder in "AllowanceIQ" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DataManagerTests.swift,
+			);
+			target = B4B0C4E92ED51CCD003221FD /* AllowanceIQ */;
+		};
+		B47608BC2EE4E19500015966 /* Exceptions for "AllowanceIQTests" folder in "AllowanceIQUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DataManagerTests.swift,
+			);
+			target = B4B0C5052ED51CCE003221FD /* AllowanceIQUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		B47608B02EE4DFA500015966 /* AllowanceIQUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B47608B72EE4E14800015966 /* Exceptions for "AllowanceIQUITests" folder in "AllowanceIQ" target */,
+				B47608B82EE4E14800015966 /* Exceptions for "AllowanceIQUITests" folder in "AllowanceIQUITests" target */,
+			);
+			path = AllowanceIQUITests;
+			sourceTree = "<group>";
+		};
+		B47608B42EE4DFA800015966 /* AllowanceIQTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B47608BB2EE4E19500015966 /* Exceptions for "AllowanceIQTests" folder in "AllowanceIQ" target */,
+				B47608BC2EE4E19500015966 /* Exceptions for "AllowanceIQTests" folder in "AllowanceIQUITests" target */,
+			);
+			path = AllowanceIQTests;
+			sourceTree = "<group>";
+		};
+		B47608C22EE4E29600015966 /* AllownaceIQ Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "AllownaceIQ Watch App";
+			sourceTree = "<group>";
+		};
+		B47608D02EE4E29700015966 /* AllownaceIQ Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "AllownaceIQ Watch AppTests";
+			sourceTree = "<group>";
+		};
+		B47608DA2EE4E29700015966 /* AllownaceIQ Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "AllownaceIQ Watch AppUITests";
+			sourceTree = "<group>";
+		};
 		B4B0C4EC2ED51CCD003221FD /* AllowanceIQ */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AllowanceIQ;
 			sourceTree = "<group>";
 		};
-		B4B0C4FF2ED51CCE003221FD /* AllowanceIQTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AllowanceIQTests;
-			sourceTree = "<group>";
-		};
-		B4B0C5092ED51CCE003221FD /* AllowanceIQUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AllowanceIQUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		B47608BE2EE4E29600015966 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B47608CA2EE4E29700015966 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B47608D42EE4E29700015966 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B4B0C4E72ED51CCD003221FD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -76,9 +195,12 @@
 			isa = PBXGroup;
 			children = (
 				B4B0C4EC2ED51CCD003221FD /* AllowanceIQ */,
-				B4B0C4FF2ED51CCE003221FD /* AllowanceIQTests */,
-				B4B0C5092ED51CCE003221FD /* AllowanceIQUITests */,
+				B47608C22EE4E29600015966 /* AllownaceIQ Watch App */,
+				B47608D02EE4E29700015966 /* AllownaceIQ Watch AppTests */,
+				B47608DA2EE4E29700015966 /* AllownaceIQ Watch AppUITests */,
 				B4B0C4EB2ED51CCD003221FD /* Products */,
+				B47608B02EE4DFA500015966 /* AllowanceIQUITests */,
+				B47608B42EE4DFA800015966 /* AllowanceIQTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,6 +210,9 @@
 				B4B0C4EA2ED51CCD003221FD /* AllowanceIQ.app */,
 				B4B0C4FC2ED51CCE003221FD /* AllowanceIQTests.xctest */,
 				B4B0C5062ED51CCE003221FD /* AllowanceIQUITests.xctest */,
+				B47608C12EE4E29600015966 /* AllownaceIQ Watch App.app */,
+				B47608CD2EE4E29700015966 /* AllownaceIQ Watch AppTests.xctest */,
+				B47608D72EE4E29700015966 /* AllownaceIQ Watch AppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +220,74 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		B47608C02EE4E29600015966 /* AllownaceIQ Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B47608E22EE4E29700015966 /* Build configuration list for PBXNativeTarget "AllownaceIQ Watch App" */;
+			buildPhases = (
+				B47608BD2EE4E29600015966 /* Sources */,
+				B47608BE2EE4E29600015966 /* Frameworks */,
+				B47608BF2EE4E29600015966 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B47608C22EE4E29600015966 /* AllownaceIQ Watch App */,
+			);
+			name = "AllownaceIQ Watch App";
+			packageProductDependencies = (
+			);
+			productName = "AllownaceIQ Watch App";
+			productReference = B47608C12EE4E29600015966 /* AllownaceIQ Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B47608CC2EE4E29700015966 /* AllownaceIQ Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B47608E62EE4E29700015966 /* Build configuration list for PBXNativeTarget "AllownaceIQ Watch AppTests" */;
+			buildPhases = (
+				B47608C92EE4E29700015966 /* Sources */,
+				B47608CA2EE4E29700015966 /* Frameworks */,
+				B47608CB2EE4E29700015966 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B47608CF2EE4E29700015966 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B47608D02EE4E29700015966 /* AllownaceIQ Watch AppTests */,
+			);
+			name = "AllownaceIQ Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "AllownaceIQ Watch AppTests";
+			productReference = B47608CD2EE4E29700015966 /* AllownaceIQ Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B47608D62EE4E29700015966 /* AllownaceIQ Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B47608E92EE4E29700015966 /* Build configuration list for PBXNativeTarget "AllownaceIQ Watch AppUITests" */;
+			buildPhases = (
+				B47608D32EE4E29700015966 /* Sources */,
+				B47608D42EE4E29700015966 /* Frameworks */,
+				B47608D52EE4E29700015966 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B47608D92EE4E29700015966 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B47608DA2EE4E29700015966 /* AllownaceIQ Watch AppUITests */,
+			);
+			name = "AllownaceIQ Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "AllownaceIQ Watch AppUITests";
+			productReference = B47608D72EE4E29700015966 /* AllownaceIQ Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		B4B0C4E92ED51CCD003221FD /* AllowanceIQ */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B4B0C5102ED51CCE003221FD /* Build configuration list for PBXNativeTarget "AllowanceIQ" */;
@@ -102,12 +295,16 @@
 				B4B0C4E62ED51CCD003221FD /* Sources */,
 				B4B0C4E72ED51CCD003221FD /* Frameworks */,
 				B4B0C4E82ED51CCD003221FD /* Resources */,
+				B47608E52EE4E29700015966 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B47608E02EE4E29700015966 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				B47608B02EE4DFA500015966 /* AllowanceIQUITests */,
+				B47608B42EE4DFA800015966 /* AllowanceIQTests */,
 				B4B0C4EC2ED51CCD003221FD /* AllowanceIQ */,
 			);
 			name = AllowanceIQ;
@@ -130,9 +327,6 @@
 			dependencies = (
 				B4B0C4FE2ED51CCE003221FD /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				B4B0C4FF2ED51CCE003221FD /* AllowanceIQTests */,
-			);
 			name = AllowanceIQTests;
 			packageProductDependencies = (
 			);
@@ -153,9 +347,6 @@
 			dependencies = (
 				B4B0C5082ED51CCE003221FD /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				B4B0C5092ED51CCE003221FD /* AllowanceIQUITests */,
-			);
 			name = AllowanceIQUITests;
 			packageProductDependencies = (
 			);
@@ -173,6 +364,17 @@
 				LastSwiftUpdateCheck = 2610;
 				LastUpgradeCheck = 2610;
 				TargetAttributes = {
+					B47608C02EE4E29600015966 = {
+						CreatedOnToolsVersion = 26.1.1;
+					};
+					B47608CC2EE4E29700015966 = {
+						CreatedOnToolsVersion = 26.1.1;
+						TestTargetID = B47608C02EE4E29600015966;
+					};
+					B47608D62EE4E29700015966 = {
+						CreatedOnToolsVersion = 26.1.1;
+						TestTargetID = B47608C02EE4E29600015966;
+					};
 					B4B0C4E92ED51CCD003221FD = {
 						CreatedOnToolsVersion = 26.1.1;
 					};
@@ -203,11 +405,35 @@
 				B4B0C4E92ED51CCD003221FD /* AllowanceIQ */,
 				B4B0C4FB2ED51CCE003221FD /* AllowanceIQTests */,
 				B4B0C5052ED51CCE003221FD /* AllowanceIQUITests */,
+				B47608C02EE4E29600015966 /* AllownaceIQ Watch App */,
+				B47608CC2EE4E29700015966 /* AllownaceIQ Watch AppTests */,
+				B47608D62EE4E29700015966 /* AllownaceIQ Watch AppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B47608BF2EE4E29600015966 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B47608CB2EE4E29700015966 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B47608D52EE4E29700015966 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B4B0C4E82ED51CCD003221FD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -232,6 +458,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		B47608BD2EE4E29600015966 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B47608C92EE4E29700015966 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B47608D32EE4E29700015966 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B4B0C4E62ED51CCD003221FD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,6 +503,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B47608CF2EE4E29700015966 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B47608C02EE4E29600015966 /* AllownaceIQ Watch App */;
+			targetProxy = B47608CE2EE4E29700015966 /* PBXContainerItemProxy */;
+		};
+		B47608D92EE4E29700015966 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B47608C02EE4E29600015966 /* AllownaceIQ Watch App */;
+			targetProxy = B47608D82EE4E29700015966 /* PBXContainerItemProxy */;
+		};
+		B47608E02EE4E29700015966 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B47608C02EE4E29600015966 /* AllownaceIQ Watch App */;
+			targetProxy = B47608DF2EE4E29700015966 /* PBXContainerItemProxy */;
+		};
 		B4B0C4FE2ED51CCE003221FD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B4B0C4E92ED51CCD003221FD /* AllowanceIQ */;
@@ -269,6 +531,162 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		B47608E32EE4E29700015966 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L25556Z34Q;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = AllownaceIQ;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "juniors-homers.AllowanceIQ";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "juniors-homers.AllowanceIQ.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.1;
+			};
+			name = Debug;
+		};
+		B47608E42EE4E29700015966 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L25556Z34Q;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = AllownaceIQ;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "juniors-homers.AllowanceIQ";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "juniors-homers.AllowanceIQ.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.1;
+			};
+			name = Release;
+		};
+		B47608E72EE4E29700015966 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L25556Z34Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "juniors-homers.AllownaceIQ-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AllownaceIQ Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AllownaceIQ Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.1;
+			};
+			name = Debug;
+		};
+		B47608E82EE4E29700015966 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L25556Z34Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "juniors-homers.AllownaceIQ-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AllownaceIQ Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AllownaceIQ Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.1;
+			};
+			name = Release;
+		};
+		B47608EA2EE4E29700015966 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L25556Z34Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "juniors-homers.AllownaceIQ-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "AllownaceIQ Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.1;
+			};
+			name = Debug;
+		};
+		B47608EB2EE4E29700015966 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L25556Z34Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "juniors-homers.AllownaceIQ-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "AllownaceIQ Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.1;
+			};
+			name = Release;
+		};
 		B4B0C50E2ED51CCE003221FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -395,11 +813,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L25556Z34Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = AllowanceIQ;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -427,11 +848,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L25556Z34Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = AllowanceIQ;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -541,6 +965,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		B47608E22EE4E29700015966 /* Build configuration list for PBXNativeTarget "AllownaceIQ Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B47608E32EE4E29700015966 /* Debug */,
+				B47608E42EE4E29700015966 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B47608E62EE4E29700015966 /* Build configuration list for PBXNativeTarget "AllownaceIQ Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B47608E72EE4E29700015966 /* Debug */,
+				B47608E82EE4E29700015966 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B47608E92EE4E29700015966 /* Build configuration list for PBXNativeTarget "AllownaceIQ Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B47608EA2EE4E29700015966 /* Debug */,
+				B47608EB2EE4E29700015966 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B4B0C4E52ED51CCD003221FD /* Build configuration list for PBXProject "AllowanceIQ" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

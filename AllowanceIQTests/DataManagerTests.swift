@@ -1,51 +1,17 @@
 //
-//  AllowanceIQUITests.swift
-//  AllowanceIQUITests
+//  DataManagerTests.swift
+//  AllowanceIQ
 //
 //  Created by Brian Homer Jr on 11/24/25.
 //
-//  Integration tests for complete workflows
+//  Unit tests for DataManager
 //
 
-import Combine
 import XCTest
+import Combine
 @testable import AllowanceIQ
 
-final class AllowanceIQUITests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
-    }
-}
-
-
-final class IntegrationTests: XCTestCase {
+final class DataManagerTests: XCTestCase {
     var dataManager: DataManager!
     var cancellables: Set<AnyCancellable>!
     
@@ -64,6 +30,238 @@ final class IntegrationTests: XCTestCase {
         cancellables = nil
         UserDefaults.standard.removeObject(forKey: "allowance-tracker-data")
         super.tearDown()
+    }
+    
+    // MARK: - Add Child Tests
+    
+    func testAddChild() {
+        // Given
+        let expectation = XCTestExpectation(description: "Child added")
+        
+        dataManager.$children
+            .dropFirst()
+            .sink { children in
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        // When
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        
+        // Then
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(dataManager.children.count, 1)
+        XCTAssertEqual(dataManager.children.first?.name, "Alice")
+        XCTAssertEqual(dataManager.children.first?.birthYear, 2015)
+        XCTAssertEqual(dataManager.children.first?.balance, 0)
+        XCTAssertTrue(dataManager.children.first?.isTithingEnabled ?? false)
+    }
+    
+    func testAddMultipleChildren() {
+        // When
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        dataManager.addChild(name: "Bob", birthYear: 2018, isTithingEnabled: false)
+        
+        // Then
+        XCTAssertEqual(dataManager.children.count, 2)
+        XCTAssertEqual(dataManager.children[0].name, "Alice")
+        XCTAssertEqual(dataManager.children[1].name, "Bob")
+    }
+    
+    // MARK: - Delete Child Tests
+    
+    func testDeleteChild() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        dataManager.addChild(name: "Bob", birthYear: 2018, isTithingEnabled: false)
+        let aliceId = dataManager.children.first(where: { $0.name == "Alice" })!.id
+        
+        // When
+        dataManager.deleteChild(id: aliceId)
+        
+        // Then
+        XCTAssertEqual(dataManager.children.count, 1)
+        XCTAssertEqual(dataManager.children.first?.name, "Bob")
+    }
+    
+    func testDeleteNonExistentChild() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        let originalCount = dataManager.children.count
+        
+        // When
+        dataManager.deleteChild(id: "non-existent-id")
+        
+        // Then
+        XCTAssertEqual(dataManager.children.count, originalCount)
+    }
+    
+    // MARK: - Transaction Tests
+    
+    func testAddDepositTransaction() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: false)
+        let childId = dataManager.children.first!.id
+        
+        // When
+        dataManager.addTransaction(childId: childId, type: .deposit, amount: 10.0, note: "Allowance")
+        
+        // Then
+        let child = dataManager.children.first!
+        XCTAssertEqual(child.balance, 10.0)
+        XCTAssertEqual(child.transactions.count, 1)
+        XCTAssertEqual(child.transactions.first?.type, .deposit)
+        XCTAssertEqual(child.transactions.first?.amount, 10.0)
+        XCTAssertEqual(child.transactions.first?.note, "Allowance")
+    }
+    
+    func testAddWithdrawalTransaction() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: false)
+        let childId = dataManager.children.first!.id
+        dataManager.addTransaction(childId: childId, type: .deposit, amount: 20.0, note: "Initial")
+        
+        // When
+        dataManager.addTransaction(childId: childId, type: .withdrawal, amount: 5.0, note: "Toy")
+        
+        // Then
+        let child = dataManager.children.first!
+        XCTAssertEqual(child.balance, 15.0)
+        XCTAssertEqual(child.transactions.count, 2)
+    }
+    
+    func testDepositWithTithing() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        let childId = dataManager.children.first!.id
+        
+        // When
+        dataManager.addTransaction(childId: childId, type: .deposit, amount: 100.0, note: "Allowance")
+        
+        // Then
+        let child = dataManager.children.first!
+        XCTAssertEqual(child.balance, 100.0)
+        XCTAssertEqual(child.tithingBalance, 10.0)
+        XCTAssertEqual(child.netBalance, 90.0)
+    }
+    
+    func testWithdrawalDoesNotAffectTithing() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        let childId = dataManager.children.first!.id
+        dataManager.addTransaction(childId: childId, type: .deposit, amount: 100.0, note: "Allowance")
+        
+        // When
+        dataManager.addTransaction(childId: childId, type: .withdrawal, amount: 20.0, note: "Toy")
+        
+        // Then
+        let child = dataManager.children.first!
+        XCTAssertEqual(child.balance, 80.0)
+        XCTAssertEqual(child.tithingBalance, 10.0)
+    }
+    
+    // MARK: - Tithing Tests
+    
+    func testPayTithing() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        let childId = dataManager.children.first!.id
+        dataManager.addTransaction(childId: childId, type: .deposit, amount: 100.0, note: "Allowance")
+        
+        // When
+        dataManager.payTithing(for: childId)
+        
+        // Then
+        let child = dataManager.children.first!
+        XCTAssertEqual(child.balance, 90.0)
+        XCTAssertEqual(child.tithingBalance, 0.0)
+        
+        // Verify tithing payment transaction was added
+        let tithingTransaction = child.transactions.first(where: { $0.note == "Tithing payment" })
+        XCTAssertNotNil(tithingTransaction)
+        XCTAssertEqual(tithingTransaction?.type, .withdrawal)
+        XCTAssertEqual(tithingTransaction?.amount, 10.0)
+    }
+    
+    func testPayTithingWithZeroBalance() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        let childId = dataManager.children.first!.id
+        
+        // When
+        dataManager.payTithing(for: childId)
+        
+        // Then
+        let child = dataManager.children.first!
+        XCTAssertEqual(child.balance, 0.0)
+        XCTAssertEqual(child.tithingBalance, 0.0)
+        XCTAssertEqual(child.transactions.count, 0)
+    }
+    
+    // MARK: - Sorted Children Tests
+    
+    func testSortedChildren() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        dataManager.addChild(name: "Bob", birthYear: 2018, isTithingEnabled: false)
+        dataManager.addChild(name: "Charlie", birthYear: 2012, isTithingEnabled: true)
+        
+        // When
+        let sorted = dataManager.sortedChildren
+        
+        // Then
+        XCTAssertEqual(sorted.count, 3)
+        XCTAssertEqual(sorted[0].name, "Bob") // 2018 - youngest
+        XCTAssertEqual(sorted[1].name, "Alice") // 2015
+        XCTAssertEqual(sorted[2].name, "Charlie") // 2012 - oldest
+    }
+    
+    // MARK: - Persistence Tests
+    
+    func testSaveAndLoadData() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        let childId = dataManager.children.first!.id
+        dataManager.addTransaction(childId: childId, type: .deposit, amount: 50.0, note: "Test")
+        
+        // When
+        let newDataManager = DataManager()
+        
+        // Then
+        XCTAssertEqual(newDataManager.children.count, 1)
+        XCTAssertEqual(newDataManager.children.first?.name, "Alice")
+        XCTAssertEqual(newDataManager.children.first?.balance, 50.0)
+        XCTAssertEqual(newDataManager.children.first?.transactions.count, 1)
+    }
+    
+    // MARK: - Edge Cases
+    
+    func testNegativeBalance() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: false)
+        let childId = dataManager.children.first!.id
+        
+        // When
+        dataManager.addTransaction(childId: childId, type: .withdrawal, amount: 10.0, note: "Overdraft")
+        
+        // Then
+        let child = dataManager.children.first!
+        XCTAssertEqual(child.balance, -10.0)
+    }
+    
+    func testMultipleDepositsAccumulateTithing() {
+        // Given
+        dataManager.addChild(name: "Alice", birthYear: 2015, isTithingEnabled: true)
+        let childId = dataManager.children.first!.id
+        
+        // When
+        dataManager.addTransaction(childId: childId, type: .deposit, amount: 50.0, note: "Week 1")
+        dataManager.addTransaction(childId: childId, type: .deposit, amount: 50.0, note: "Week 2")
+        
+        // Then
+        let child = dataManager.children.first!
+        XCTAssertEqual(child.balance, 100.0)
+        XCTAssertEqual(child.tithingBalance, 10.0)
     }
     
     // MARK: - Complete Workflow Tests
