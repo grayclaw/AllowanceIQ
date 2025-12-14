@@ -8,10 +8,10 @@
 import SwiftUI
 
 @main
-struct AllownaceIQ_Watch_AppApp: App {
+struct AllownaceIQWatchApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WatchContentView()
         }
     }
 }
