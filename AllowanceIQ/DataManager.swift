@@ -12,53 +12,16 @@ class DataManager: ObservableObject {
     @Published var children: [Child] = []
     
     private let storageKey = "allowance-tracker-data"
-    private let kvStore: NSUbiquitousKeyValueStore?
-    private let useICloud: Bool
+    private let appGroupID = "group.juniors-homers.allowanceiq"
     
-    init(useICloud: Bool = true) {
-        // Check if iCloud KV Store is available by checking entitlements
-        var canUseICloud = false
-        var store: NSUbiquitousKeyValueStore?
-        
-        if useICloud {
-            // Check if the ubiquity container identifier is set
-            if let ubiquityIdentityToken = FileManager.default.ubiquityIdentityToken {
-                store = NSUbiquitousKeyValueStore.default
-                canUseICloud = true
-                print("iCloud available with token: \(ubiquityIdentityToken)")
-            } else {
-                print("iCloud not available - no ubiquity token")
-                canUseICloud = false
-            }
-        }
-        
-        self.useICloud = canUseICloud
-        self.kvStore = store
-        
-        if canUseICloud, let kvStore = store {
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(ubiquitousKeyValueStoreDidChange),
-                name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
-                object: kvStore
-            )
-            kvStore.synchronize()
-        }
-        
+    init() {
         loadData()
     }
     
     func loadData() {
-        // Try iCloud first if available
-        if useICloud, let kvStore = kvStore,
-           let data = kvStore.data(forKey: storageKey),
-           let decoded = try? JSONDecoder().decode([Child].self, from: data) {
-            children = decoded
-            return
-        }
-        
-        // Fall back to UserDefaults
-        if let data = UserDefaults.standard.data(forKey: storageKey),
+        // Use App Group UserDefaults for sharing between iOS and watchOS
+        if let sharedDefaults = UserDefaults(suiteName: appGroupID),
+           let data = sharedDefaults.data(forKey: storageKey),
            let decoded = try? JSONDecoder().decode([Child].self, from: data) {
             children = decoded
         } else {
@@ -68,30 +31,23 @@ class DataManager: ObservableObject {
     
     func saveData() {
         if let encoded = try? JSONEncoder().encode(children) {
-            // Save to iCloud if available
-            if useICloud, let kvStore = kvStore {
-                kvStore.set(encoded, forKey: storageKey)
-                kvStore.synchronize()
+            // Save to App Group UserDefaults so both iPhone and Watch can access
+            if let sharedDefaults = UserDefaults(suiteName: appGroupID) {
+                sharedDefaults.set(encoded, forKey: storageKey)
             }
-            // Always save to UserDefaults as backup
-            UserDefaults.standard.set(encoded, forKey: storageKey)
         }
     }
     
-    @objc private func ubiquitousKeyValueStoreDidChange(_ notification: Notification) {
-        DispatchQueue.main.async {
-            self.loadData()
-        }
-    }
-    
-    func addChild(name: String, birthYear: Int, isTithingEnabled: Bool) {
+    func addChild(name: String, birthYear: Int, isTithingEnabled: Bool, isSavingsEnabled: Bool = false, savingsPercentage: Double) {
         let newChild = Child(
             id: UUID().uuidString,
             name: name,
             birthYear: birthYear,
             balance: 0,
             transactions: [],
-            isTithingEnabled: isTithingEnabled
+            isTithingEnabled: isTithingEnabled,
+            isSavingsEnabled: isSavingsEnabled,
+            savingsPercentage: savingsPercentage * 0.01
         )
         children.append(newChild)
         saveData()
@@ -100,6 +56,16 @@ class DataManager: ObservableObject {
     func deleteChild(id: String) {
         children.removeAll { $0.id == id }
         saveData()
+    }
+    
+    func updateChild(id: String, birthYear: Int, isTithingEnabled: Bool, isSavingsEnabled: Bool, savingsPercentage: Double) {
+        if let index = children.firstIndex(where: { $0.id == id }) {
+            children[index].birthYear = birthYear
+            children[index].isTithingEnabled = isTithingEnabled
+            children[index].isSavingsEnabled = isSavingsEnabled
+            children[index].savingsPercentage = savingsPercentage * 0.01
+            saveData()
+        }
     }
     
     func addTransaction(childId: String, type: Transaction.TransactionType, amount: Double, note: String) {
@@ -120,6 +86,11 @@ class DataManager: ObservableObject {
         if type == .deposit && children[index].isTithingEnabled {
             let tithingAmount = amount * 0.10
             children[index].tithingBalance += tithingAmount
+        }
+        
+        if type == .deposit && children[index].isSavingsEnabled {
+            let savingAmount = amount * children[index].savingsPercentage
+            children[index].savingsBalance += savingAmount
         }
 
         saveData()
@@ -157,25 +128,32 @@ class DataManager: ObservableObject {
         var newBalance = 0.0
         var totalDeposits = 0.0
         var totalTithingPaid = 0.0
+        var totalSavingsPaid = 0.0
         
         for transaction in children[childIndex].transactions {
             switch transaction.type {
-            case .deposit:
-                newBalance += transaction.amount
-                totalDeposits += transaction.amount
-            case .withdrawal:
-                newBalance -= transaction.amount
-            case .tithingPayment:
-                newBalance -= transaction.amount
-                totalTithingPaid += transaction.amount
+                case .deposit:
+                    newBalance += transaction.amount
+                    totalDeposits += transaction.amount
+                case .withdrawal:
+                    newBalance -= transaction.amount
+                case .tithingPayment:
+                    newBalance -= transaction.amount
+                    totalTithingPaid += transaction.amount
+                case .savingsDeposit:
+                    newBalance -= transaction.amount
+                    totalSavingsPaid += transaction.amount
             }
         }
         
         let calculatedTithing = totalDeposits * 0.10
         let newTithingBalance = max(0, calculatedTithing - totalTithingPaid)
+        let calculatedSavings = totalDeposits * children[childIndex].savingsPercentage
+        let newSavingsBalance = max(0, calculatedSavings - totalSavingsPaid)
         
         children[childIndex].balance = newBalance
         children[childIndex].tithingBalance = newTithingBalance
+        children[childIndex].savingsBalance = newSavingsBalance
     }
 
     func payTithing(for childId: String) {
@@ -189,6 +167,25 @@ class DataManager: ObservableObject {
             type: .tithingPayment,
             amount: amountPaid,
             note: "Tithing payment",
+            date: Date()
+        )
+        
+        children[childIndex].transactions.append(transaction)
+        recalculateChildFinances(childId: childId)
+        saveData()
+    }
+    
+    func paySavings(for childId: String) {
+        guard let childIndex = children.firstIndex(where: { $0.id == childId }) else { return }
+        
+        let amountPaid = children[childIndex].savingsBalance
+        guard amountPaid > 0 else { return }
+        
+        let transaction = Transaction(
+            id: UUID().uuidString,
+            type: .savingsDeposit,
+            amount: amountPaid,
+            note: "Savings deposit",
             date: Date()
         )
         

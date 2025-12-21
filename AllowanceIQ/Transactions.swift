@@ -18,5 +18,6 @@ struct Transaction: Identifiable, Codable {
         case deposit
         case withdrawal
         case tithingPayment
+        case savingsDeposit
     }
 }

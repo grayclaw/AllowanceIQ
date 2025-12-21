@@ -61,6 +61,9 @@ struct AddChildView: View {
     @State private var name = ""
     @State private var birthYear = ""
     @State private var isTithingEnabled: Bool = true
+    @State private var isSavingsEnabled: Bool = true
+    @State private var savingsPercentage: Double = 0
+    @State private var savingsPercentageText: String = ""
     
     var currentYear: Int {
         Calendar.current.component(.year, from: Date())
@@ -95,6 +98,29 @@ struct AddChildView: View {
                 Section {
                     Toggle("Enable Tithing", isOn: $isTithingEnabled)
                 }
+                
+                Section {
+                    Toggle("Enable Savings", isOn: $isSavingsEnabled)
+                        .padding(.bottom, 4)
+                    TextField("Enter a savings percentage (1 - 100)", text: $savingsPercentageText)
+                        .keyboardType(.decimalPad)
+                        .padding()
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .onChange(of: savingsPercentageText) { oldValue, newValue in
+                            if let value = Double(newValue) {
+                                let clamped = min(value, 100)
+                                savingsPercentage = clamped
+                                if value > 100 {
+                                    savingsPercentageText = "100"
+                                }
+                            } else if newValue.isEmpty {
+                                savingsPercentage = 0
+                            }
+                        }
+                        .disabled(!isSavingsEnabled)
+                } header: {
+                    Text("Savings Percentage")
+                }
             }
             .navigationTitle("Add New Child")
             .navigationBarTitleDisplayMode(.inline)
@@ -107,7 +133,110 @@ struct AddChildView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add Child") {
                         if isValid, let year = Int(birthYear) {
-                            dataManager.addChild(name: name.trimmingCharacters(in: .whitespaces), birthYear: year, isTithingEnabled: isTithingEnabled)
+                            dataManager.addChild(name: name.trimmingCharacters(in: .whitespaces), birthYear: year, isTithingEnabled: isTithingEnabled, isSavingsEnabled: isSavingsEnabled, savingsPercentage: savingsPercentage)
+                            dismiss()
+                        }
+                    }
+                    .disabled(!isValid)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Edit Child View
+
+struct EditChildView: View {
+    @EnvironmentObject var dataManager: DataManager
+    @Environment(\.dismiss) var dismiss
+    
+    let child: Child
+    
+    @State private var birthYear = ""
+    @State private var isTithingEnabled: Bool
+    @State private var isSavingsEnabled: Bool
+    @State private var savingsPercentage: Double
+    @State private var displayPercentage: Double
+    
+    init(child: Child) {
+        self.child = child
+        _birthYear = State(initialValue: String(child.birthYear))
+        _isTithingEnabled = State(initialValue: child.isTithingEnabled)
+        _isSavingsEnabled = State(initialValue: child.isSavingsEnabled)
+        _savingsPercentage = State(initialValue: child.savingsPercentage)
+        _displayPercentage = State(initialValue: child.savingsPercentage * 100)
+    }
+    
+    
+    var currentYear: Int {
+        Calendar.current.component(.year, from: Date())
+    }
+    
+    var isValid: Bool {
+        guard let year = Int(birthYear),
+              year >= 1900,
+              year <= currentYear else {
+            return false
+        }
+        return true
+    }
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    Text(child.name)
+                        .foregroundColor(.secondary)
+                } header: {
+                    Text("Name (cannot be changed)")
+                }
+                
+                Section {
+                    TextField("e.g., \(currentYear - 10)", text: $birthYear)
+                        .keyboardType(.numberPad)
+                } header: {
+                    Text("Birth Year")
+                }
+                
+                Section {
+                    Toggle("Enable Tithing", isOn: $isTithingEnabled)
+                }
+                
+                Section {
+                    Toggle("Enable Savings", isOn: $isSavingsEnabled)
+                        .padding(.bottom, 4)
+                    TextField("Enter a savings percentage (1 - 100)", value: $displayPercentage, format: .number)
+                        .keyboardType(.decimalPad)
+                        .padding()
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .onChange(of: displayPercentage) { oldValue, newValue in
+                            let clamped = min(max(newValue, 0), 100)
+                            displayPercentage = clamped
+                            savingsPercentage = clamped
+                        }
+                        .disabled(!isSavingsEnabled)
+                } header: {
+                    Text("Savings Percentage")
+                }
+            }
+            .navigationTitle("Edit \(child.name)")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        if isValid, let year = Int(birthYear) {
+                            dataManager.updateChild(
+                                id: child.id,
+                                birthYear: year,
+                                isTithingEnabled: isTithingEnabled,
+                                isSavingsEnabled: isSavingsEnabled,
+                                savingsPercentage: savingsPercentage
+                            )
                             dismiss()
                         }
                     }
@@ -128,6 +257,7 @@ struct ChildDetailView: View {
     @State private var showingTransactionForm = false
     @State private var selectedTransaction: Transaction?
     @State private var showingDeleteAlert = false
+    @State private var showingEditSheet = false
     
     var sortedTransactions: [Transaction] {
         child.transactions.sorted { $0.date > $1.date }
@@ -201,6 +331,32 @@ struct ChildDetailView: View {
                         .cornerRadius(8)
                     }
                     
+                    if child.isSavingsEnabled {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Savings Balance")
+                                .font(.headline)
+                            
+                            HStack {
+                                Text(formatCurrency(child.savingsBalance))
+                                    .font(.title3)
+                                    .foregroundColor(.blue)
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    dataManager.paySavings(for: child.id)
+                                }) {
+                                    Label("Mark as Paid", systemImage: "checkmark.circle")
+                                }
+                                .disabled(child.savingsBalance == 0)
+                                .buttonStyle(.borderedProminent)
+                            }
+                        }
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                    }
+                    
                     // Add Transaction Button
                     Button(action: { showingTransactionForm = true }) {
                         Label("New Transaction", systemImage: "plus")
@@ -241,6 +397,19 @@ struct ChildDetailView: View {
                     .cornerRadius(12)
                     .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
                     
+                    // Edit Child Settings Button
+                    Button(action: { showingEditSheet = true }) {
+                        Text("Edit Child Settings")
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    .background(Color.blue)
+                    .cornerRadius(12)
+                    .padding(.top, 30)
+                    
                     // Remove Child Button
                     Button(action: { showingDeleteAlert = true }) {
                         Text("Remove Child")
@@ -252,9 +421,10 @@ struct ChildDetailView: View {
                     }
                     .background(Color.red)
                     .cornerRadius(12)
-                    .padding(.top, 40)
+                    .padding(.top, 6)
                 }
                 .padding()
+                .padding(.bottom, 20)
             }
             .background(Color(.systemGroupedBackground))
         }
@@ -264,6 +434,10 @@ struct ChildDetailView: View {
         }
         .sheet(item: $selectedTransaction) { transaction in
             TransactionFormView(childId: child.id, editingTransaction: transaction)
+                .environmentObject(dataManager)
+        }
+        .sheet(isPresented: $showingEditSheet) {
+            EditChildView(child: child)
                 .environmentObject(dataManager)
         }
         .alert("Confirm Deletion", isPresented: $showingDeleteAlert) {

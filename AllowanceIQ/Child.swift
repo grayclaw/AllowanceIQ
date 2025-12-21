@@ -15,12 +15,15 @@ struct Child: Identifiable, Codable {
     var transactions: [Transaction]
     var tithingBalance: Double = 0
     var isTithingEnabled: Bool = true
+    var isSavingsEnabled: Bool = false
+    var savingsPercentage: Double = 0
+    var savingsBalance: Double = 0
 
     var age: Int {
         Calendar.current.component(.year, from: Date()) - birthYear
     }
 
     var netBalance: Double {
-        balance - tithingBalance
+        balance - tithingBalance - savingsBalance
     }
 }

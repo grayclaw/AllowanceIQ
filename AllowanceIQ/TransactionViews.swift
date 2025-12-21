@@ -10,17 +10,28 @@ import SwiftUI
 struct TransactionRow: View {
     let transaction: Transaction
     let onTap: () -> Void
+    var transactionStyle: (type: String, sign: String, color: Color) {
+        switch transaction.type {
+        case .deposit:
+            return ("DEPOSIT", "+", Color("OtherGreen"))
+        case .savingsDeposit:
+            return ("SAVINGS DEPOSIT", "", .primary)
+        case .tithingPayment:
+            return ("TITHING PAYMENT", "-", .red)
+        default:
+            return (transaction.type.rawValue.uppercased(), "-", .red)
+        }
+    }
     
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(spacing: 8) {
-                    Text("\(transaction.type == .deposit ? "+" : "-")\(formatCurrency(transaction.amount))")
+                    Text("\(transactionStyle.sign)\(formatCurrency(transaction.amount))")
                         .font(.body)
                         .fontWeight(.bold)
-                        .foregroundColor(transaction.type == .deposit ? Color("OtherGreen") : .red)
-                    
-                    Text(transaction.type.rawValue.uppercased())
+                        .foregroundColor(transactionStyle.color)
+                    Text(transactionStyle.type)
                         .font(.subheadline)
                         .foregroundColor(.primary)
                 }
