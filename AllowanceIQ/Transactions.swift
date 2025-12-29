@@ -6,18 +6,20 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct Transaction: Identifiable, Codable {
-    let id: String
-    let type: TransactionType
-    let amount: Double
-    let note: String
-    let date: Date
-    
     enum TransactionType: String, Codable {
         case deposit
         case withdrawal
         case tithingPayment
         case savingsDeposit
     }
+
+    let id: String
+    var type: TransactionType
+    var amount: Double
+    var note: String
+    var date: Date
 }
+

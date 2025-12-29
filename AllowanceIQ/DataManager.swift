@@ -7,35 +7,56 @@
 
 import SwiftUI
 import Combine
+import WatchConnectivity
 
 class DataManager: ObservableObject {
     @Published var children: [Child] = []
     
-    private let storageKey = "allowance-tracker-data"
     private let appGroupID = "group.juniors-homers.allowanceiq"
-    
+
     init() {
+        ConnectivityProvider.shared.dataManager = self
         loadData()
+        // Listen for iCloud changes
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(icloudDataChanged),
+            name: NSUbiquitousKeyValueStore.didChangeExternallyNotification,
+            object: NSUbiquitousKeyValueStore.default
+        )
     }
-    
+
     func loadData() {
-        // Use App Group UserDefaults for sharing between iOS and watchOS
-        if let sharedDefaults = UserDefaults(suiteName: appGroupID),
-           let data = sharedDefaults.data(forKey: storageKey),
+        // First try iCloud
+        let store = NSUbiquitousKeyValueStore.default
+        if let data = store.data(forKey: "children"),
            let decoded = try? JSONDecoder().decode([Child].self, from: data) {
             children = decoded
         } else {
             children = []
         }
     }
-    
+
     func saveData() {
         if let encoded = try? JSONEncoder().encode(children) {
-            // Save to App Group UserDefaults so both iPhone and Watch can access
-            if let sharedDefaults = UserDefaults(suiteName: appGroupID) {
-                sharedDefaults.set(encoded, forKey: storageKey)
+            // Save to iCloud
+            let store = NSUbiquitousKeyValueStore.default
+            store.set(encoded, forKey: "children")
+            store.synchronize()
+
+            // Send to Watch
+            if WCSession.default.isReachable {
+                WCSession.default.sendMessage(["children": encoded], replyHandler: nil) { error in
+                    print("Error sending data:", error.localizedDescription)
+                }
+            } else {
+                WCSession.default.transferUserInfo(["children": encoded])
             }
         }
+    }
+
+    @objc private func icloudDataChanged(_ notification: Notification) {
+        loadData() // reload when iCloud pushes changes
     }
     
     func addChild(name: String, birthYear: Int, isTithingEnabled: Bool, isSavingsEnabled: Bool = false, savingsPercentage: Double) {

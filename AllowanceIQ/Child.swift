@@ -27,3 +27,4 @@ struct Child: Identifiable, Codable {
         balance - tithingBalance - savingsBalance
     }
 }
+

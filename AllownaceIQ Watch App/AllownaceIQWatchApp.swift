@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct AllownaceIQWatchApp: App {
+    init() {
+        ConnectivityProvider.shared.startSession()
+    }
+
     var body: some Scene {
         WindowGroup {
             WatchContentView()
+                .environmentObject(DataManager())
         }
     }
 }
